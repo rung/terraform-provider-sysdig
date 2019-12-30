@@ -1,8 +1,10 @@
 package secure
 
 import (
+	"fmt"
 	"io"
 	"net/http"
+	"os"
 )
 
 type SysdigSecureClient interface {
@@ -20,6 +22,16 @@ type SysdigSecureClient interface {
 	GetNotificationChannelById(int) (NotificationChannel, error)
 	DeleteNotificationChannel(int) error
 	UpdateNotificationChannel(NotificationChannel) (NotificationChannel, error)
+
+	CreateUsers(Users) (Users, error)
+	GetUsersById(int) (Users, error)
+	DeleteUsers(int) error
+	UpdateUsers(Users) (Users, error)
+
+	CreateTeams(Teams) (Teams, error)
+	GetTeamsById(int) (Teams, error)
+	DeleteTeams(int) error
+	UpdateTeams(Teams) (Teams, error)
 }
 
 func NewSysdigSecureClient(sysdigSecureAPIToken string, url string) SysdigSecureClient {
@@ -40,6 +52,11 @@ func (client *sysdigSecureClient) doSysdigSecureRequest(method string, url strin
 	request, _ := http.NewRequest(method, url, payload)
 	request.Header.Set("Authorization", "Bearer "+client.SysdigSecureAPIToken)
 	request.Header.Set("Content-Type", "application/json")
+
+	file, _ := os.OpenFile("/tmp/terraform.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+
+	defer file.Close()
+	fmt.Fprintln(file, payload)
 
 	return client.httpClient.Do(request)
 }

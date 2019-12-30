@@ -194,3 +194,63 @@ func RuleFromJSON(body []byte) (rule Rule, err error) {
 	err = json.Unmarshal(body, &rule)
 	return
 }
+
+// -------- Users --------
+type Users struct {
+	ID         int    `json:"id,omitempty"`
+	Version    int    `json:"version,omitempty"`
+	SystemRole string `json:"systemRole,omitempty"`
+	Email      string `json:"username"`
+	FirstName  string `json:"firstName,omitempty"`
+	LastName   string `json:"lastName,omitempty"`
+}
+
+func (u *Users) ToJSON() io.Reader {
+	payload, _ := json.Marshal(*u)
+	return bytes.NewBuffer(payload)
+}
+
+func UsersFromJSON(body []byte) Users {
+	var result usersWrapper
+	json.Unmarshal(body, &result)
+
+	return result.Users
+}
+
+type usersWrapper struct {
+	Users Users `json:"user"`
+}
+
+// -------- Teams --------
+type Teams struct {
+	ID            int         `json:"id,omitempty"`
+	Version       int         `json:"version,omitempty"`
+	Theme         string      `json:"theme"` // #73A1F7
+	Name          string      `json:"name"`
+	Description   string      `json:"description"`
+	ScopeBy       string      `json:"show"`
+	Filter        string      `json:"filter"`
+	AdvancedUsers []UserRoles `json:"userRoles,omitempty"`
+	DefaultTeam   bool        `json:"default"`
+}
+
+type UserRoles struct {
+	UserId string `json:"userId"`
+	Role   string `json:"role"`
+}
+
+func (t *Teams) ToJSON() io.Reader {
+	payload, _ := json.Marshal(*t)
+	return bytes.NewBuffer(payload)
+}
+
+func TeamsFromJSON(body []byte) Teams {
+	var result teamsWrapper
+	json.Unmarshal(body, &result)
+
+	return result.Teams
+}
+
+type teamsWrapper struct {
+	Teams Teams `json:"team"`
+}
