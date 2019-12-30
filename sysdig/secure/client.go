@@ -22,6 +22,11 @@ type SysdigSecureClient interface {
 	CreatePoliciesPriority(PoliciesPriority) (PoliciesPriority, error)
 	UpdatePoliciesPriority(PoliciesPriority) (PoliciesPriority, error)
 	GetPoliciesPriority() (PoliciesPriority, error)
+
+	CreateUsers(Users) (Users, error)
+	GetUsersById(int) (Users, error)
+	DeleteUsers(int) error
+	UpdateUsers(Users) (Users, error)
 }
 
 func NewSysdigSecureClient(sysdigSecureAPIToken string, url string) SysdigSecureClient {

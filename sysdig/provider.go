@@ -26,6 +26,7 @@ func Provider() terraform.ResourceProvider {
 			"sysdig_secure_user_rules_file":      resourceSysdigSecureUserRulesFile(),
 			"sysdig_secure_notification_channel": resourceSysdigSecureNotificationChannel(),
 			"sysdig_secure_policies_priority":    resourceSysdigSecurePoliciesPriority(),
+			"sysdig_secure_users":                resourceSysdigSecureUsers(),
 		},
 		ConfigureFunc: providerConfigure,
 	}

@@ -208,3 +208,29 @@ func NotificationChannelFromJSON(body []byte) NotificationChannel {
 type notificationChannelWrapper struct {
 	NotificationChannel NotificationChannel `json:"notificationChannel"`
 }
+
+// -------- Users --------
+type Users struct {
+	ID         int    `json:"id,omitempty"`
+	Version    int    `json:"version,omitempty"`
+	SystemRole string `json:"systemRole,omitempty"`
+	Email      string `json:"username"`
+	FirstName  string `json:"firstName,omitempty"`
+	LastName   string `json:"lastName,omitempty"`
+}
+
+func (u *Users) ToJSON() io.Reader {
+	payload, _ := json.Marshal(*u)
+	return bytes.NewBuffer(payload)
+}
+
+func UsersFromJSON(body []byte) Users {
+	var result usersWrapper
+	json.Unmarshal(body, &result)
+
+	return result.Users
+}
+
+type usersWrapper struct {
+	Users Users `json:"user"`
+}

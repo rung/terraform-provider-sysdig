@@ -4,6 +4,12 @@ resource "sysdig_secure_user_rules_file" "this" {
   content = "${file("${path.module}/rules-traefik.yaml")}"
 }
 
+resource "sysdig_secure_users" "sample-users" {
+  email = "root@localhost.com"
+  first_name = "test"
+  last_name = "test"
+}
+
 resource "sysdig_secure_notification_channel" "sample-email" {
   name = "Example Channel - Email"
   enabled = true
