@@ -234,3 +234,36 @@ func UsersFromJSON(body []byte) Users {
 type usersWrapper struct {
 	Users Users `json:"user"`
 }
+
+// -------- Teams --------
+type Teams struct {
+	ID          int           `json:"id,omitempty"`
+	Version     int           `json:"version,omitempty"`
+	Theme       string        `json:"theme"` // #73A1F7
+	Name        string        `json:"name"`
+	Description string        `json:"description"`
+	Filter      string        `json:"filter"`
+	Memberships []Memberships `json:"userRoles"`
+	DefaultTeam bool          `json:"default"`
+}
+
+type Memberships struct {
+	UserId string `json:"userId"`
+	Role   string `json:"role"`
+}
+
+func (t *Teams) ToJSON() io.Reader {
+	payload, _ := json.Marshal(*t)
+	return bytes.NewBuffer(payload)
+}
+
+func TeamsFromJSON(body []byte) Teams {
+	var result teamsWrapper
+	json.Unmarshal(body, &result)
+
+	return result.Teams
+}
+
+type teamsWrapper struct {
+	Teams Teams `json:"team"`
+}

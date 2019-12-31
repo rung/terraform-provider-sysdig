@@ -61,7 +61,6 @@ func (client *sysdigSecureClient) UpdateUsers(uRequest Users) (u Users, err erro
 
 	u = UsersFromJSON(body)
 	return
-
 }
 
 func (client *sysdigSecureClient) DeleteUsers(id int) error {

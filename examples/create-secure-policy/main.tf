@@ -10,6 +10,15 @@ resource "sysdig_secure_users" "sample-users" {
   last_name = "test"
 }
 
+resource "sysdig_secure_teams" "sample-teams" {
+  name        = "sample-team"
+  description = "sample"
+  filter      = "container.name is not "
+  memberships = [
+    { user_id = "${sysdig_secure_users.sample-users.id}" },
+  ]
+}
+
 resource "sysdig_secure_notification_channel" "sample-email" {
   name = "Example Channel - Email"
   enabled = true
