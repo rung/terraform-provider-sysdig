@@ -45,8 +45,8 @@ func (client *sysdigSecureClient) CreateTeams(uRequest Teams) (t Teams, err erro
 	return
 }
 
-func (client *sysdigSecureClient) UpdateTeams(uRequest Teams) (t Teams, err error) {
-	response, err := client.doSysdigSecureRequest(http.MethodPut, client.GetTeamsUrl(t.ID), uRequest.ToJSON())
+func (client *sysdigSecureClient) UpdateTeams(tRequest Teams) (t Teams, err error) {
+	response, err := client.doSysdigSecureRequest(http.MethodPut, client.GetTeamsUrl(tRequest.ID), tRequest.ToJSON())
 	if err != nil {
 		return
 	}
@@ -70,7 +70,7 @@ func (client *sysdigSecureClient) DeleteTeams(id int) error {
 	}
 	defer response.Body.Close()
 
-	if response.StatusCode != http.StatusNoContent {
+	if response.StatusCode != http.StatusNoContent && response.StatusCode != http.StatusOK {
 		return errors.New(response.Status)
 	}
 	return nil

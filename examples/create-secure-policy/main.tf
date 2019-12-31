@@ -13,10 +13,9 @@ resource "sysdig_secure_users" "sample-users" {
 resource "sysdig_secure_teams" "sample-teams" {
   name        = "sample-team"
   description = "sample"
-  filter      = "container.name is not "
-  memberships = [
-    { user_id = "${sysdig_secure_users.sample-users.id}" },
-  ]
+  memberships {
+    user_id = sysdig_secure_users.sample-users.id
+  }
 }
 
 resource "sysdig_secure_notification_channel" "sample-email" {

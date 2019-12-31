@@ -38,6 +38,10 @@ func resourceSysdigSecureUsers() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
+			"version": {
+				Type:     schema.TypeInt,
+				Computed: true,
+			},
 		},
 	}
 }

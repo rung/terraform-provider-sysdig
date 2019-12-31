@@ -46,7 +46,7 @@ func (client *sysdigSecureClient) CreateUsers(uRequest Users) (u Users, err erro
 }
 
 func (client *sysdigSecureClient) UpdateUsers(uRequest Users) (u Users, err error) {
-	response, err := client.doSysdigSecureRequest(http.MethodPut, client.GetUsersUrl(u.ID), uRequest.ToJSON())
+	response, err := client.doSysdigSecureRequest(http.MethodPut, client.GetUsersUrl(uRequest.ID), uRequest.ToJSON())
 	if err != nil {
 		return
 	}
@@ -70,7 +70,7 @@ func (client *sysdigSecureClient) DeleteUsers(id int) error {
 	}
 	defer response.Body.Close()
 
-	if response.StatusCode != http.StatusNoContent {
+	if response.StatusCode != http.StatusNoContent && response.StatusCode != http.StatusOK {
 		return errors.New(response.Status)
 	}
 	return nil

@@ -242,8 +242,9 @@ type Teams struct {
 	Theme       string        `json:"theme"` // #73A1F7
 	Name        string        `json:"name"`
 	Description string        `json:"description"`
+	ScopeBy     string        `json:"show"`
 	Filter      string        `json:"filter"`
-	Memberships []Memberships `json:"userRoles"`
+	Memberships []Memberships `json:"userRoles,omitempty"`
 	DefaultTeam bool          `json:"default"`
 }
 

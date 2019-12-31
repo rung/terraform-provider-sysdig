@@ -34,13 +34,18 @@ func resourceSysdigSecureTeams() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
+			"scope_by": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Default:  "container",
+			},
 			"filter": {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
 			"memberships": {
 				Type:     schema.TypeSet,
-				Required: true,
+				Optional: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"user_id": {
@@ -59,6 +64,10 @@ func resourceSysdigSecureTeams() *schema.Resource {
 				Type:     schema.TypeBool,
 				Optional: true,
 				Default:  false,
+			},
+			"version": {
+				Type:     schema.TypeInt,
+				Computed: true,
 			},
 		},
 	}
@@ -96,6 +105,7 @@ func resourceSysdigTeamsRead(d *schema.ResourceData, meta interface{}) error {
 	d.Set("theme", t.Theme)
 	d.Set("name", t.Name)
 	d.Set("description", t.Description)
+	d.Set("scope_by", t.ScopeBy)
 	d.Set("filter", t.Filter)
 	d.Set("memberships", t.Memberships)
 	d.Set("default_team", t.DefaultTeam)
@@ -129,6 +139,7 @@ func teamsFromResourceData(d *schema.ResourceData) (u secure.Teams) {
 		Theme:       d.Get("theme").(string),
 		Name:        d.Get("name").(string),
 		Description: d.Get("description").(string),
+		ScopeBy:     d.Get("scope_by").(string),
 		Filter:      d.Get("filter").(string),
 		DefaultTeam: d.Get("default_team").(bool),
 	}
