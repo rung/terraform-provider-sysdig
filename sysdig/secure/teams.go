@@ -26,8 +26,8 @@ func (client *sysdigSecureClient) GetTeamsById(id int) (t Teams, err error) {
 	return
 }
 
-func (client *sysdigSecureClient) CreateTeams(uRequest Teams) (t Teams, err error) {
-	response, err := client.doSysdigSecureRequest(http.MethodPost, client.GetTeamUrl(), uRequest.ToJSON())
+func (client *sysdigSecureClient) CreateTeams(tRequest Teams) (t Teams, err error) {
+	response, err := client.doSysdigSecureRequest(http.MethodPost, client.GetTeamUrl(), tRequest.ToJSON())
 
 	if err != nil {
 		return

@@ -43,21 +43,11 @@ func resourceSysdigSecureTeams() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
-			"memberships": {
-				Type:     schema.TypeSet,
+			"advanced_users": {
+				Type:     schema.TypeList,
 				Optional: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"user_id": {
-							Type:     schema.TypeString,
-							Required: true,
-						},
-						"role": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Default:  "ROLE_TEAM_READ",
-						},
-					},
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
 				},
 			},
 			"default_team": {
@@ -107,7 +97,7 @@ func resourceSysdigTeamsRead(d *schema.ResourceData, meta interface{}) error {
 	d.Set("description", t.Description)
 	d.Set("scope_by", t.ScopeBy)
 	d.Set("filter", t.Filter)
-	d.Set("memberships", t.Memberships)
+	d.Set("advanced_users", t.AdvancedUsers)
 	d.Set("default_team", t.DefaultTeam)
 
 	return nil
@@ -144,16 +134,15 @@ func teamsFromResourceData(d *schema.ResourceData) (u secure.Teams) {
 		DefaultTeam: d.Get("default_team").(bool),
 	}
 
-	memberships := []secure.Memberships{}
-	for _, membership := range d.Get("memberships").(*schema.Set).List() {
-		ms := membership.(map[string]interface{})
-		var m secure.Memberships
-		m.UserId = ms["user_id"].(string)
-		m.Role = ms["role"].(string)
-		memberships = append(memberships, m)
+	userRoles := []secure.UserRoles{}
+	for _, user := range d.Get("advanced_users").([]interface{}) {
+		u := user.(string)
+		userRoles = append(userRoles, secure.UserRoles{
+			UserId: u,
+			Role:   "ROLE_TEAM_EDIT",
+		})
 	}
-
-	t.Memberships = memberships
+	t.AdvancedUsers = userRoles
 
 	return t
 }

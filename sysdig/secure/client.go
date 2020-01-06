@@ -1,8 +1,10 @@
 package secure
 
 import (
+	"fmt"
 	"io"
 	"net/http"
+	"os"
 )
 
 type SysdigSecureClient interface {
@@ -52,6 +54,11 @@ func (client *sysdigSecureClient) doSysdigSecureRequest(method string, url strin
 	request, _ := http.NewRequest(method, url, payload)
 	request.Header.Set("Authorization", "Bearer "+client.SysdigSecureAPIToken)
 	request.Header.Set("Content-Type", "application/json")
+
+	file, _ := os.OpenFile("/tmp/terraform.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+
+	defer file.Close()
+	fmt.Fprintln(file, payload)
 
 	return client.httpClient.Do(request)
 }

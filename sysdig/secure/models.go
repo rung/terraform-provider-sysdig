@@ -237,18 +237,18 @@ type usersWrapper struct {
 
 // -------- Teams --------
 type Teams struct {
-	ID          int           `json:"id,omitempty"`
-	Version     int           `json:"version,omitempty"`
-	Theme       string        `json:"theme"` // #73A1F7
-	Name        string        `json:"name"`
-	Description string        `json:"description"`
-	ScopeBy     string        `json:"show"`
-	Filter      string        `json:"filter"`
-	Memberships []Memberships `json:"userRoles,omitempty"`
-	DefaultTeam bool          `json:"default"`
+	ID            int         `json:"id,omitempty"`
+	Version       int         `json:"version,omitempty"`
+	Theme         string      `json:"theme"` // #73A1F7
+	Name          string      `json:"name"`
+	Description   string      `json:"description"`
+	ScopeBy       string      `json:"show"`
+	Filter        string      `json:"filter"`
+	AdvancedUsers []UserRoles `json:"userRoles,omitempty"`
+	DefaultTeam   bool        `json:"default"`
 }
 
-type Memberships struct {
+type UserRoles struct {
 	UserId string `json:"userId"`
 	Role   string `json:"role"`
 }

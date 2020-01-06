@@ -13,9 +13,10 @@ resource "sysdig_secure_users" "sample-users" {
 resource "sysdig_secure_teams" "sample-teams" {
   name        = "sample-team"
   description = "sample"
-  memberships {
-    user_id = sysdig_secure_users.sample-users.id
-  }
+
+  advanced_users = [
+    "${sysdig_secure_users.sample-users.id}"]
+
 }
 
 resource "sysdig_secure_notification_channel" "sample-email" {

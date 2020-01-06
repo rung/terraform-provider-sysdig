@@ -76,9 +76,8 @@ func TestGetUsersByIdFailsWhenDoesNotExist(t *testing.T) {
 
 func aUsers() secure.Users {
 	return secure.Users{
-		Email: "root@localhost",
+		Email:     "root@localhost",
 		FirstName: "users",
-		LastName: "test",
+		LastName:  "test",
 	}
 }
-
