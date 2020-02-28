@@ -50,8 +50,8 @@ func Provider() terraform.ResourceProvider {
 			"sysdig_monitor_alert_anomaly":       resourceSysdigMonitorAlertAnomaly(),
 			"sysdig_monitor_alert_group_outlier": resourceSysdigMonitorAlertGroupOutlier(),
 
-			"sysdig_secure_users":                resourceSysdigSecureUsers(),
-			"sysdig_secure_teams":                resourceSysdigSecureTeams(),
+			"sysdig_secure_users": resourceSysdigSecureUsers(),
+			"sysdig_secure_teams": resourceSysdigSecureTeams(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
