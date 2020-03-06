@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func TestAccSecureTeam(t *testing.T) {
+func TestAccMonitorTeam(t *testing.T) {
 	rText := func() string { return acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum) }
 
 	resource.Test(t, resource.TestCase{
@@ -18,30 +18,33 @@ func TestAccSecureTeam(t *testing.T) {
 			if v := os.Getenv("SYSDIG_SECURE_API_TOKEN"); v == "" {
 				t.Fatal("SYSDIG_SECURE_API_TOKEN must be set for acceptance tests")
 			}
+			if v := os.Getenv("SYSDIG_MONITOR_API_TOKEN"); v == "" {
+				t.Fatal("SYSDIG_MONITOR_API_TOKEN must be set for acceptance tests")
+			}
 		},
 		Providers: map[string]terraform.ResourceProvider{
 			"sysdig": sysdig.Provider(),
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: secureTeamWithName(rText()),
+				Config: monitorTeamWithName(rText()),
 			},
 			{
-				Config: secureTeamWithOneUser(rText()),
+				Config: monitorTeamWithOneUser(rText()),
 			},
 			{
-				Config: secureTeamWithTwoUser(rText()),
+				Config: monitorTeamWithTwoUser(rText()),
 			},
 			{
-				Config: secureTeamMinimumConfiguration(rText()),
+				Config: monitorTeamMinimumConfiguration(rText()),
 			},
 		},
 	})
 }
 
-func secureTeamWithName(name string) string {
+func monitorTeamWithName(name string) string {
 	return fmt.Sprintf(`
-resource "sysdig_secure_team" "sample" {
+resource "sysdig_monitor_team" "sample" {
   name               = "sample-%s"
   description        = "%s"
   scope_by           = "container"
@@ -49,13 +52,13 @@ resource "sysdig_secure_team" "sample" {
 }`, name, name)
 }
 
-func secureTeamWithOneUser(name string) string {
+func monitorTeamWithOneUser(name string) string {
 	return fmt.Sprintf(`
 resource "sysdig_user" "sample" {
-  email      = "terraform-test+team@sysdig.com"
+  email      = "terraform-test+monitor-team@sysdig.com"
 }
 
-resource "sysdig_secure_team" "sample" {
+resource "sysdig_monitor_team" "sample" {
   name               = "sample-%s"
   description        = "%s"
   scope_by           = "container"
@@ -69,17 +72,17 @@ resource "sysdig_secure_team" "sample" {
 }`, name, name)
 }
 
-func secureTeamWithTwoUser(name string) string {
+func monitorTeamWithTwoUser(name string) string {
 	return fmt.Sprintf(`
 resource "sysdig_user" "sample1" {
-  email      = "terraform-test+team-1@sysdig.com"
+  email      = "terraform-test+monitor-team-1@sysdig.com"
 }
 
 resource "sysdig_user" "sample2" {
-  email      = "terraform-test+team-2@sysdig.com"
+  email      = "terraform-test+monitor-team-2@sysdig.com"
 }
 
-resource "sysdig_secure_team" "sample" {
+resource "sysdig_monitor_team" "sample" {
   name               = "sample-%s"
   description        = "%s"
   scope_by           = "container"
@@ -98,9 +101,9 @@ resource "sysdig_secure_team" "sample" {
 }`, name, name)
 }
 
-func secureTeamMinimumConfiguration(name string) string {
+func monitorTeamMinimumConfiguration(name string) string {
 	return fmt.Sprintf(`
-resource "sysdig_secure_team" "sample" {
+resource "sysdig_monitor_team" "sample" {
   name      = "sample-%s"
 }`, name)
 }

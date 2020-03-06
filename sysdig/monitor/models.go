@@ -78,3 +78,64 @@ func AlertFromJSON(body []byte) Alert {
 
 	return result.Alert
 }
+
+// -------- Team --------
+type Team struct {
+	ID                  int         `json:"id,omitempty"`
+	Version             int         `json:"version,omitempty"`
+	Theme               string      `json:"theme"`
+	Name                string      `json:"name"`
+	Description         string      `json:"description"`
+	ScopeBy             string      `json:"show"`
+	Filter              string      `json:"filter"`
+	CanUseSysdigCapture bool        `json:"canUseSysdigCapture"`
+	CanUseCustomEvents  bool        `json:"canUseCustomEvents"`
+	CanUseAwsMetrics    bool        `json:"canUseAwsMetrics"`
+	UserRoles           []UserRoles `json:"userRoles,omitempty"`
+	DefaultTeam         bool        `json:"default"`
+	EntryPoint          EntryPoint  `json:"entryPoint"`
+	Products            []string    `json:"products"`
+}
+
+type UserRoles struct {
+	UserId int    `json:"userId"`
+	Email  string `json:"userName",omitempty`
+	Role   string `json:"role"`
+}
+
+type EntryPoint struct {
+	Module string `json:"module"`
+}
+
+func (t *Team) ToJSON() io.Reader {
+	payload, _ := json.Marshal(*t)
+	return bytes.NewBuffer(payload)
+}
+
+func TeamFromJSON(body []byte) Team {
+	var result teamWrapper
+	json.Unmarshal(body, &result)
+
+	return result.Team
+}
+
+type teamWrapper struct {
+	Team Team `json:"team"`
+}
+
+// -------- UsersList --------
+type UsersList struct {
+	ID    int    `json:"id"`
+	Email string `json:"username"`
+}
+
+func UsersListFromJSON(body []byte) []UsersList {
+	var result usersListWrapper
+	json.Unmarshal(body, &result)
+
+	return result.UsersList
+}
+
+type usersListWrapper struct {
+	UsersList []UsersList `json:"users"`
+}
